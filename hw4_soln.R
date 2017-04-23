@@ -208,16 +208,16 @@ table(prediction.rpt, test.d$priceDir)
 # Modelling using Gradient Boosting
 install.packages('gbm')
 library('gbm')
-
-#model.gbm <- gbm(priceDir ~ ., data=trng.d, n.trees=5000, interaction.depth =6, shrinkage=0.01)
-
-#model.gbm <- gbm(priceDir ~ snp_cat3+ snp_cat4 + snp_cat5 + bnd_cat4 + bnd_cat5 + oil_cat1 + oil_cat2 + oil_cat3 + oil_cat4 + oil_cat5, data=trng.d, n.trees=5000, interaction.depth =6, shrinkage=0.01)
-
+model.gbm <- gbm((unclass(priceDir)-1) ~ snp_cat3+ snp_cat4 + snp_cat5 + bnd_cat4 + bnd_cat5 + oil_cat1 + oil_cat2 + oil_cat3 + oil_cat4 + oil_cat5, data=trng.d, n.trees=5000, interaction.depth =6, shrinkage=0.01)
 prediction.gbm <- predict(model.gbm, newdata = test.d, n.trees=5000, type="response")
+head(prediction.gbm[])
+tail(prediction.gbm[])
 
-
-
-
+#cross validation
+control <- trainControl(method = "cv", number = 10 , savePredictions = TRUE)
+price.rpt.cv <- train(priceDir ~ snp_cat3+ snp_cat4 + snp_cat5 + bnd_cat4 + bnd_cat5 + oil_cat1 + oil_cat2 + oil_cat3 + oil_cat4 + oil_cat5, data = trng.d , method = "rpart", trControl = control)
+predict.rpt.cv <- predict(price.rpt.cv, newdata = test.d)
+confusionMatrix(predict.rpt.cv, test.d$priceDir)
 
 
 
