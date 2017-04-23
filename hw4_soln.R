@@ -28,7 +28,6 @@ colSums(is.na(crudeoil))
 bond10yr <- bond10yr.d
 snp500 <- sp500.d
 
-require(sqldf)
 install.packages('sqldf')
 library('sqldf')
 
