@@ -195,7 +195,7 @@ predictions <- predict(model.NB, test.d)
 confusionMatrix(test.d$priceDir, predictions$class)
 
 # Modelling using Recursive Partition Tree
-install.packages('rpart')
+#install.packages('rpart')
 library('rpart')
 model.rpt <- rpart(priceDir ~ snp_cat3+ snp_cat4 + snp_cat5 + bnd_cat4 + bnd_cat5 + oil_cat1 + oil_cat2 + oil_cat3 + oil_cat4 + oil_cat5, data=trng.d, cp=0)
 plot(model.rpt)
@@ -205,12 +205,13 @@ printcp(model.rpt)
 table(prediction.rpt, test.d$priceDir)
 
 # Modelling using Gradient Boosting
-install.packages('gbm')
+#install.packages('gbm')
 library('gbm')
 model.gbm <- gbm((unclass(priceDir)-1) ~ snp_cat3+ snp_cat4 + snp_cat5 + bnd_cat4 + bnd_cat5 + oil_cat1 + oil_cat2 + oil_cat3 + oil_cat4 + oil_cat5, data=trng.d, n.trees=5000, interaction.depth =6, shrinkage=0.01)
 prediction.gbm <- predict(model.gbm, newdata = test.d, n.trees=5000, type="response")
 head(prediction.gbm[])
 tail(prediction.gbm[])
+summary(gbm1,n.trees=1)
 
 #cross validation
 control <- trainControl(method = "cv", number = 10 , savePredictions = TRUE)
